@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="project.css" rel="stylesheet">
+        <script src="../error.mts" type="module"></script>
+        <script src="../api.mts" type="module"></script>
+        <script src="project.mts" type="module"></script>
+    </head>
+    <body>
+        <div id="error_list"></div>
+        <a href="/">Return</a>
+        <h3 id="title">Project</h3>
+        <ol id="select">
+            <li class="tab"><input type="radio" name="tab" value="add" checked>Add Asset</li>
+            <li class="tab"><input type="radio" name="tab" value="rem">Remove Asset</li>
+            <li class="tab"><input type="radio" name="tab" value="swa">Swap Assets</li>
+            <li class="tab"><input type="radio" name="tab" value="set"> Set Asset's Status</li>
+        </ol>
+        <div id="add_board" class="board">
+            <INJECT src="./add/frag.html">
+        </div>
+        <div id="remove_board" class="board">
+            <INJECT src="./remove/frag.html">
+        </div>
+        <div id="swap_board" class="board">
+            <INJECT src="./swap/frag.html">
+        </div>
+        <div id="set_board" class="board">
+            <INJECT src="./set/frag.html">
+        </div>
+    </body>
+</html>

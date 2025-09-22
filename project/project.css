@@ -1,0 +1,14 @@
+.invisible {
+    display: none;
+}
+
+li:hover {
+    cursor: pointer;
+}
+/* li {
+    width: 100vw;
+    text-align: center;
+}
+ul {
+    padding-top: 7.5%;
+} */
