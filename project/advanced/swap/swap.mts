@@ -2,7 +2,7 @@ import {
     remove_asset_from_project, get_project_assets,
     search_tag, set_assignment_status, assign_asset_to_project,
     type Asset, type InstanceAssets
-} from "../api.mjs";
+} from "/common/api.mts";
 
 let recent_ids: number[] = [];
 async function handle_swap(project_id: number | string, e_replacement: HTMLInputElement, status: HTMLSelectElement) {
@@ -25,7 +25,7 @@ async function handle_swap(project_id: number | string, e_replacement: HTMLInput
     }
 }
 
-export async function prep_swap(project_id: string) {
+export async function prep_swap(project_id: number | string) {
     const replacement = document.getElementById('swap_tag')! as any;
     const status = document.getElementById('swap_status')! as any;
     await handle_swap(project_id, replacement, status);

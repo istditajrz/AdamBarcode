@@ -1,5 +1,4 @@
 let n_error = 0;
-import { authenticate } from "./api.mjs"
 
 function error_banner(msg: string, url: string | undefined, line: number, col: number, error: Error | undefined) {
     const el = document.createElement('template');

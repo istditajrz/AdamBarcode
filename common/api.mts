@@ -2,10 +2,18 @@ import {fetch} from "@tauri-apps/plugin-http"
 
 // TYPES
 
-export type Project  = {
+export type Project = {
 	projects_name: string,
 	projects_id: number,
 	clients_name: string,
+}
+
+export type ProjectData = {
+	projects_id: number,
+	projects_name: string,
+	clients_name: string,
+	project_dates_deliver_start: string,
+	projectsStatuses_id: number
 }
 
 export type Asset = {
@@ -34,6 +42,13 @@ export type InstanceAssets = {
 // CONSTS
 
 export const BASE_URL: string = "https://dash.adam-rms.com/api"
+
+export const prep_proj_statuses: number[] = [
+	1003, // Confimed
+	1197, // Prepped
+	1198, // Dispatched
+	1006, // Returned
+]
 
 export const registered_instance: Record<number, string> = {
 	1: "Technical Theatre Society",
@@ -160,4 +175,8 @@ export async function set_assignment_status(project_id: number | string, assignm
 	return await post_endpoint<any>(
 		"/projects/assets/setStatusByTag.php?" + params.toString()
 	);
+}
+
+export async function get_project_data(project_id: number | string): Promise<ProjectData> {
+	return await post_endpoint<{project: ProjectData}>('/projects/data.php?id=' + project_id.toString()).then(v => v.project);
 }

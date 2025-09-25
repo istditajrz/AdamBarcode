@@ -1,4 +1,4 @@
-import { search_tag, set_assignment_status } from "../api.mjs";
+import { search_tag, set_assignment_status } from "/common/api.mts";
 
 export async function prep_set(project_id: string | number) {
     const tag: HTMLInputElement = document.getElementById('set_tag')! as any;

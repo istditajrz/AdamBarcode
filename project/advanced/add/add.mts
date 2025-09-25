@@ -1,8 +1,8 @@
 import { 
     assign_asset_to_project, search_tag, set_assignment_status
-} from "../api.mjs";
+} from "/common/api.mts";
 
-export async function prep_add(project_id: string) {
+export async function prep_add(project_id: string | number) {
         const tag: HTMLInputElement = document.getElementById('add_tag')! as any;
         const status: HTMLSelectElement = document.getElementById('add_status')! as any;
         tag.onkeydown = async (e) => {
@@ -10,6 +10,8 @@ export async function prep_add(project_id: string) {
                 const asset = await search_tag(tag.value);
                 await assign_asset_to_project(project_id, asset.assets_id);
                 await set_assignment_status(project_id, status.value, asset.assets_tag);
+                tag.style = "border: 4px var(--green);"
+                setTimeout(() => tag.style = '', 100);
                 tag.value = '';
             }
         };

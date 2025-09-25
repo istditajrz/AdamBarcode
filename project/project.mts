@@ -1,50 +1,53 @@
-import { authenticate, get_projects } from "../api.mjs";
-import { prep_add } from "../add/add.mjs";
-import { prep_remove } from "../remove/remove.mjs";
-import { prep_swap } from "../swap/swap.mjs";
-import { prep_set } from "../set/set.mjs";
+import { get_projects } from "/common/api.mts";
+import { prep_advanced, start_advanced } from "./advanced/advanced.mjs"; 
+import { start_prep } from "./prep/prep.mjs";
+import { start_deprep } from "./deprep/deprep.mjs";
 
-const select = document.getElementById('select')!;
-const set: Array<HTMLInputElement> = Array(...select.children).map((ul) => ul.firstChild) as any;
-const boards: HTMLCollectionOf<HTMLDivElement> = document.getElementsByClassName('board') as any;
+const url = new URL(window.location.href);
+const project_id = url.searchParams.get("p")!;
+const proj_name = url.searchParams.get("name");
 
-function select_handler() {
-    for (let i = 0; i < set.length; i++) {
-        const el = set[i]!;
+const title = document.getElementById('title')!;
+const simple_select = document.getElementById('simple-select')!;
+const prep_options = simple_select.getElementsByTagName('input');
+const boards = document.querySelectorAll('.body .board');
+
+async function simple_select_handler() {
+    for (let i = 0; i < prep_options.length; i++) {
+        const option = prep_options[i]!;
         const board = boards[i]!;
-        if (el.checked) {
-            board.classList.remove('invisible');
-            Array(...board.getElementsByClassName('input'))
-                .forEach(e => e.removeAttribute('disabled'));
-            board.getElementsByTagName('input')[0]!
-                .focus(); // Focus input box w/ cursor
-        } else {
-            board.classList.add('invisible');
-            Array(...board.getElementsByClassName('input'))
-                .forEach(e => {
-                    if (!e.hasAttribute('disabled')) {
-                        e.toggleAttribute('disabled')
-                    }
+        if (option.checked) {
+            option.classList.remove('invisble');
+            board.classList.remove('invisible')
+            Array(...board.getElementsByTagName('input'))
+                .reverse()
+                .forEach(v => {
+                    v.disabled = false;
+                    v.focus()
                 });
+            switch (option.value) {
+                case 'advance':
+                    setTimeout(start_advanced);
+                    break;
+                default:
+                case 'prep':
+                    await start_prep(project_id);
+                    break;
+                case 'deprep':
+                    await start_deprep(project_id);
+                    break;
+            }
+        } else {
+            Array(...board.getElementsByTagName('input')).forEach(v => v.disabled = true);
+            board.classList.add('invisible');
         }
     }
 }
 
-select_handler();
-select.onchange = select_handler;
-
-const title = document.getElementById('title')!;
+simple_select.onchange = simple_select_handler;
 
 (async function main() {
-    const url = new URL(window.location.href);
-    const project_id = url.searchParams.get("p")!;
-    const proj_name = url.searchParams.get("name");
-    await Promise.all([
-        prep_add(project_id),
-        prep_remove(project_id),
-        prep_swap(project_id),
-        prep_set(project_id)
-    ]);
+    simple_select_handler();
     if (proj_name) {
         title.innerText = proj_name
     } else {
@@ -54,4 +57,5 @@ const title = document.getElementById('title')!;
             ));
         title.innerText = project?.projects_name || "Unknown Project";
     }
+    await prep_advanced(project_id);
 })();

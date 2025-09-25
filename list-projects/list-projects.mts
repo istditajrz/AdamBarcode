@@ -1,4 +1,4 @@
-import { get_projects, type Project } from "../api.mjs";
+import { get_projects, get_project_data, type Project, prep_proj_statuses } from "/common/api.mts";
 
 let count = 100;
 const observe = () => {
@@ -32,7 +32,7 @@ const row = (p: Project) => {
     inner.onclick = () => window.location.href = "/project/?p=" + p.projects_id.toString() + "&name=" + p.projects_name;
     return inner;
 };
-const tbody: HTMLTableElement = document.getElementById('tablebody')! as any;
+const tbody: HTMLTableElement = document.querySelector('.body')! as any;
 
 const projects = window.sessionStorage.getItem('projects');
 if (projects) {
@@ -41,9 +41,11 @@ if (projects) {
 }
 
 get_projects()
-    .then((result) => {
+    .then(async result => {
+        const pdata = await Promise.all(result.map(p => get_project_data(p.projects_id)));
+        const filtered = pdata.filter(v => prep_proj_statuses.includes(v.projectsStatuses_id)).sort((a, b) => Date.parse(a.project_dates_deliver_start) - Date.parse(b.project_dates_deliver_start));
         tbody.replaceChildren(
-            ...result.map(element => row(element))
+            ...filtered.map(row)
         );
-        window.sessionStorage.setItem('projects', JSON.stringify(result));
+        window.sessionStorage.setItem('projects', JSON.stringify(filtered));
     });

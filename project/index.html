@@ -2,32 +2,42 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link href="project.css" rel="stylesheet">
-        <script src="../error.mts" type="module"></script>
-        <script src="../api.mts" type="module"></script>
+        <link href="../root.css" rel="stylesheet">
+        <link href="./project.css" rel="stylesheet">
+        <script src="/common/error.mts" type="module"></script>
         <script src="project.mts" type="module"></script>
     </head>
     <body>
         <div id="error_list"></div>
-        <a href="/">Return</a>
-        <h3 id="title">Project</h3>
-        <ol id="select">
-            <li class="tab"><input type="radio" name="tab" value="add" checked>Add Asset</li>
-            <li class="tab"><input type="radio" name="tab" value="rem">Remove Asset</li>
-            <li class="tab"><input type="radio" name="tab" value="swa">Swap Assets</li>
-            <li class="tab"><input type="radio" name="tab" value="set"> Set Asset's Status</li>
-        </ol>
-        <div id="add_board" class="board">
-            <INJECT src="./add/frag.html">
-        </div>
-        <div id="remove_board" class="board">
-            <INJECT src="./remove/frag.html">
-        </div>
-        <div id="swap_board" class="board">
-            <INJECT src="./swap/frag.html">
-        </div>
-        <div id="set_board" class="board">
-            <INJECT src="./set/frag.html">
+        <div class="card">
+            <div class="dropshadow"></div>
+            <div class="container">
+                <div class="header">
+                    <a href="/">
+                        <svg id="return-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#fff" d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/></svg>
+                    </a>
+                    <h3 id="title">Project</h3>
+                </div>
+                <div class="tablist">
+                    <ul id="simple-select" class="horizontal-tablist">
+                        <li class="tab"><input type="radio" name="prep" value="prep" checked><span onclick="this.previousSibling.click()">Prep</span></li>
+                        <li class="tab"><input type="radio" name="prep" value="deprep"><span onclick="this.previousSibling.click()">De-prep</span></li>
+                        <li class="tab"><input type="radio" name="prep" value="advance"><span onclick="this.previousSibling.click()">Advanced</span></li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div id="prep" class="board">
+                        <INJECT src="./prep/frag.html">
+                    </div>
+                    <div id="deprep" class="board invisible">
+                        <INJECT src="./deprep/frag.html">
+                    </div>
+                    <div id="advanced" class="board invisible">
+                        <h3 id="warning">WARNING: This menu has billing implications!</h3>
+                        <INJECT src="./advanced/frag.html">
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

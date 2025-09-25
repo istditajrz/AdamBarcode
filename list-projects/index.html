@@ -4,17 +4,18 @@
         <meta charset="utf-8">
         <link href="projects.css" rel="stylesheet">
         <link href="../root.css" rel="stylesheet">
-        <script type="module" src="../error.mts"></script>
-        <script type="module" src="../api.mts"></script>
+        <script type="module" src="/common/error.mts"></script>
         <script type="module" src="./list-projects.mts"></script>
     </head>
     <body>
         <div id="error_list"></div>
-        <div class="container">
+        <div class="card">
             <div class="dropshadow"></div>
-            <div class="table">
-                <h3 id="title">Projects</h3>
-                <table id="tablebody">
+            <div class="container">
+                <div class="header">
+                    <h3 id="title">Projects</h3>
+                </div>
+                <table class="body">
                 <!-- EXAMPLE ROW
                     <tr id="id">
                         <td class="id">id</td>

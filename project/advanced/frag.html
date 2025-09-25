@@ -1,0 +1,22 @@
+<div id="advanced-select" class="tablist">
+    <ul id="select" class="horizontal-tablist">
+        <li class="tab"><input type="radio" name="advanced" value="add" checked><span onclick="this.previousSibling.click()">Add Asset</span></li>
+        <li class="tab"><input type="radio" name="advanced" value="rem"><span onclick="this.previousSibling.click()">Remove Asset</span></li>
+        <li class="tab"><input type="radio" name="advanced" value="swa"><span onclick="this.previousSibling.click()">Swap Assets</span></li>
+        <li class="tab"><input type="radio" name="advanced" value="set"><span onclick="this.previousSibling.click()">Set Asset's Status</span></li>
+    </ul>
+</div>
+<div class="advanced">
+    <div id="add_board" class="board">
+        <INJECT src="./add/frag.html">
+    </div>
+    <div id="remove_board" class="board">
+        <INJECT src="./remove/frag.html">
+    </div>
+    <div id="swap_board" class="board">
+        <INJECT src="./swap/frag.html">
+    </div>
+    <div id="set_board" class="board">
+        <INJECT src="./set/frag.html">
+    </div> 
+</div>

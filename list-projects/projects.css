@@ -1,4 +1,4 @@
-.container {
+.card {
     /*--c-width: calc();*/
     width: 91%;
     /* position: absolute; */
@@ -6,7 +6,16 @@
     position: relative;
 }
 
-.container > .table {
+@media (min-width: 1000px) {
+    .card {
+        width: 50%;
+    }
+    .card > .container  {
+        width: 80%;
+    }
+}
+
+.card > .container {
     margin: 2px auto;
     width: 99.87%;
     border: 0px;
@@ -14,25 +23,28 @@
     background-color: var(--white);
 }
 
-.table > #title {
-    font-size: x-large;
+.container > .header {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     width: 100%;
     text-align: center;
     background-color: var(--green);
+    color: var(--white);
     border-radius: 10px 10px 0px 0px;
     margin-bottom: 5px;
+    font-size: x-large;
 }
 
-.container > .table > #tablebody {
+.card > .container > .body {
     height: 100%;
     width: 100%;
     border-spacing: 0px 10px;
     color: var(--white);
-    padding: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
-.container > .dropshadow {
+.card > .dropshadow {
     position: absolute;
     top: 0;
     left: 0;
@@ -52,6 +64,7 @@ tr {
     border: 5px solid white;
     border-collapse: collapse;
     height: 40px;
+    width: 100%;
 }
 tr:hover {
     cursor: pointer;
@@ -62,17 +75,17 @@ tr:hover {
     text-align: center;
     color: var(--light);
     font-weight: 350;
-    width: 5%;
+    width: 10%;
 }
 .project {
     padding-left: 5%;
     font-weight: 400;
-    width: 70%;
+    width: 50%;
 }
 .client {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     font-weight: 350;
-    width: 17%;
+    width: 20%;
     padding-left: 5%;
 }

@@ -4,7 +4,10 @@
     // File Layout
     "rootDir": ".",
     "outDir": "./dist",
-
+    "paths": {
+      "/common/api.mts": ["./common/api.mts"],
+      "/common/error.mts": ["./common/error.mts"]
+    },
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
