@@ -8,7 +8,7 @@ let recent_ids: number[] = [];
 async function handle_swap(project_id: number | string, e_replacement: HTMLInputElement, status: HTMLSelectElement) {
     e_replacement.onkeydown = async (e) => {
         if (e.key == 'Enter') {
-            const assets: InstanceAssets = (await get_project_assets(project_id))["1"]!;
+            const assets: InstanceAssets = (await get_project_assets(project_id))[import.meta.env.INSTANCE]!;
             const project_assets: Asset[] = Object.entries(assets)
                 .flatMap(([k, s]) => s.assets)
             const replacement = await search_tag(e_replacement.value);

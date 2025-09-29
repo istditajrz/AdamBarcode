@@ -1,4 +1,4 @@
-import {fetch} from "@tauri-apps/plugin-http"
+import {fetch, } from "@tauri-apps/plugin-http"
 
 // TYPES
 
@@ -50,26 +50,12 @@ export const prep_proj_statuses: number[] = [
 	1006, // Returned
 ]
 
-export const registered_instance: Record<number, string> = {
-	1: "Technical Theatre Society",
-	26: "Derwent College Assets",
-	28: "James Kendrick Assets"
+export const asset_assignments = {
+	requested: 1,
+	prepped: 2,
+	dispatched: 3,
+	returned: 5
 };
-
-export function instances(id: number): string {
-	return registered_instance[id] || `Unkown Instance: ${id}`;
-}
-
-export const registered_assignment_status: Record<number, string> = {
-	1: "Requested",
-	2: "Prepped",
-	3: "Dispatched",
-	5: "Returned & Stored"
-}
-
-export function assignment_status(id: number): string {
-	return registered_assignment_status[id] || `Unknown Status: ${id}`;
-}
 
 // Response helper
 export type RespHelp<T> = {
