@@ -1,7 +1,7 @@
 'use client'
 
-import { type ReactNode, createContext, useContext } from 'react';
-import { type InstanceConsts } from '@/common/api.mjs';
+import { type ReactNode, createContext } from 'react';
+import { type InstanceConsts } from '@/common/consts.mts';
 
 export const InstanceConstsContext = createContext<InstanceConsts>({
     instance: -1,
@@ -18,10 +18,6 @@ export const InstanceConstsContext = createContext<InstanceConsts>({
         deprepped: -1
     }
 });
-
-export function useInstanceConsts() {
-    return useContext(InstanceConstsContext);
-}
 
 export function InstanceConstsProvider({
     children,
