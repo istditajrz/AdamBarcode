@@ -1,7 +1,6 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @tailwind utilities;
-
 
 @theme {
 	--color-blue-500: #007bff;
@@ -29,7 +28,7 @@
 
 /* adam-rms.com styles */
 body {
-	font-family: 'Source Sans 3' !important;
+	font-family: "Source Sans 3" !important;
 	font-optical-sizing: auto;
 	font-weight: 400;
 	font-style: normal;

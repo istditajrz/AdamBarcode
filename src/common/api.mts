@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { Ok } from "./helpers.mts";
 
@@ -46,7 +46,10 @@ export type InstanceAssets = {
 export type Response<T> = {
 	result: boolean;
 	response?: T;
-	error?: any;
+	error?: {
+		code?: string;
+		message?: string;
+	};
 };
 
 export class AuthError extends Error {
@@ -57,15 +60,15 @@ export class AuthError extends Error {
 }
 
 let cookie: string | undefined;
-const base = process.env.ADAMRMS_BASE_URL;// || "https://dash.adam-rms.com/api/";
+const base = process.env.ADAMRMS_BASE_URL; // || "https://dash.adam-rms.com/api/";
 
 // METHODS
 async function endpoint<T>(
 	method: "GET" | "POST",
 	path: string,
-	body?: any,
+	body?: Record<string, string>,
 	auth?: boolean,
-	_recursed?: boolean
+	_recursed?: boolean,
 ): Promise<Response<T>> {
 	const h = new Headers();
 
@@ -73,26 +76,26 @@ async function endpoint<T>(
 	if (!cookie && !auth) {
 		await authenticate();
 	}
-	h.append('Cookie', cookie!);
+	h.append("Cookie", cookie!);
 	return fetch(`${base}${path}`, {
 		method: method,
-		credentials: 'include',
+		credentials: "include",
 		headers: h,
 		body: JSON.stringify(body) || null,
-		cache: 'force-cache',
+		cache: "force-cache",
 		next: {
-			revalidate: 5 * 60
-		}
+			revalidate: 5 * 60,
+		},
 	})
 		.then((res) => {
 			if (!res.ok) {
 				return {
 					result: false,
 					error: {
-						code: res.status,
-						message: res.statusText
-					}
-				}
+						code: res.status.toString(),
+						message: res.statusText,
+					},
+				};
 			}
 			if (auth) {
 				cookie = res.headers.getSetCookie()[0];
@@ -111,14 +114,22 @@ async function endpoint<T>(
 }
 
 export async function authenticate(): Promise<void> {
-	await endpoint('POST', '/login/login.php', { formInput: process.env.USR, password: process.env.PASS }, true);
+	await endpoint(
+		"POST",
+		"/login/login.php",
+		{ formInput: process.env.USR!, password: process.env.PASS! },
+		true,
+	);
 }
 
-async function get_endpoint<T>(path: string, body?: any): Promise<Response<T>> {
+async function get_endpoint<T>(path: string, body?: Record<string, string>): Promise<Response<T>> {
 	return await endpoint("GET", path, body);
 }
 
-async function post_endpoint<T>(path: string, body?: any): Promise<Response<T>> {
+async function post_endpoint<T>(
+	path: string,
+	body?: Record<string, string>,
+): Promise<Response<T>> {
 	return await endpoint("POST", path, body);
 }
 
@@ -127,18 +138,20 @@ export async function get_projects(): Promise<Response<Project[]>> {
 }
 
 export async function get_project_assets<T = Record<string, InstanceAssets>>(
-	project_id: number | string
+	project_id: number | string,
 ): Promise<Response<T>> {
-	return await get_endpoint(`/projects/assets/statusList.php?projects_id=${project_id}`);
+	return await get_endpoint(
+		`/projects/assets/statusList.php?projects_id=${project_id}`,
+	);
 }
 
 export async function assign_asset_to_project(
 	project_id: string | number,
 	asset_id: number,
 ) {
-	return await post_endpoint<any>("/projects/assets/assign.php", {
-		projects_id: +project_id,
-		assets_id: asset_id,
+	return await post_endpoint<void>("/projects/assets/assign.php", {
+		projects_id: project_id.toString(),
+		assets_id: asset_id.toString(),
 	});
 }
 
@@ -146,42 +159,40 @@ export async function remove_asset_from_project(
 	project_id: number | string,
 	asset_id: number,
 ) {
-	await post_endpoint<any>("/projects/assets/unassign.php", {
-		projects_id: +project_id,
-		assets_id: asset_id,
+	await post_endpoint<void>("/projects/assets/unassign.php", {
+		projects_id: project_id.toString(),
+		assets_id: asset_id.toString(),
 	});
 }
 
 export async function search_tag(tag: string): Promise<Response<Asset>> {
 	const url = `/assets/searchAssets.php?term=${tag}`;
-	return await get_endpoint<Asset[]>(url)
-		.then((res) => {
-			if (!res.result) {
-				// We know `response` is unfilled => this cast is okay
-				return res as any as Response<Asset>;
-			}
-			const asset = res.response![0];
-			if (!asset) {
-				return {
-					result: false,
-					error: {
-						code: null,
-						message: "Asset not found"
-					}
-				}
-			} else {
-				return Ok(asset);
-			}
-		});
+	return await get_endpoint<Asset[]>(url).then((res) => {
+		if (!res.result) {
+			// We know `response` is unfilled => this cast is okay
+			return res as unknown as Response<Asset>;
+		}
+		const asset = res.response![0];
+		if (!asset) {
+			return {
+				result: false,
+				error: {
+					message: "Asset not found",
+				},
+			};
+		} else {
+			return Ok(asset);
+		}
+	});
 }
 
 export async function swap_asset_in_project(
 	assetsAssignments_id: number,
 	assets_id: number,
 ) {
-	await post_endpoint<any>("/projects/assets/swap.php", {
-		assetsAssignments_id: assetsAssignments_id,
-		assets_id: assets_id,
+	await post_endpoint<void>("/projects/assets/swap.php", {
+		assetsAssignments_id: assetsAssignments_id.toString(),
+		assets_id: assets_id.toString(),
 	});
 }
 
@@ -195,28 +206,32 @@ export async function set_assignment_status(
 		assetsAssignments_status: assignment_status.toString(),
 		text: asset_tag.toString(),
 	});
-	return await post_endpoint<any>("/projects/assets/setStatusByTag.php?" + params.toString());
+	return await post_endpoint<void>(
+		"/projects/assets/setStatusByTag.php?" + params.toString(),
+	);
 }
 
 export async function get_project_data(
 	project_id: number | string,
 ): Promise<Response<ProjectData>> {
 	if (!project_id) {
-		return { result: false, error: { message: "huh?" } }
+		return { result: false, error: { message: "huh?" } };
 	}
 	return await post_endpoint<{ project: ProjectData }>(
 		"/projects/data.php?id=" + project_id.toString(),
-	).then(
-		(v) => !v.result ? v as any : Ok(v.response!.project)
-	);
+	).then((v) => (!v.result ? (v as unknown as Response<ProjectData>) : Ok(v.response!.project)));
 }
 
-export async function get_swappable(
-	assetsAssignments_id: number
-): Promise<Response<{
-	assets_id: number,
-	assets_tag: string,
-	assets_definable_field_1?: string
-}[]>> {
-	return await post_endpoint('/assets/substitutions.php', { assetsAssignments_id: assetsAssignments_id });
+export async function get_swappable(assetsAssignments_id: number): Promise<
+	Response<
+		{
+			assets_id: number;
+			assets_tag: string;
+			assets_definable_field_1?: string;
+		}[]
+	>
+> {
+	return await post_endpoint("/assets/substitutions.php", {
+		assetsAssignments_id: assetsAssignments_id.toString(),
+	});
 }
