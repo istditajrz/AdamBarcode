@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+@theme {
+	--color-blue-500: #007bff;
+	--color-indigo-500: #6610f2;
+	--color-purple-500: #6f42c1;
+	--color-pink-500: #e83e8c;
+	--color-red-500: #dc3545;
+	--color-orange-500: #fd7e14;
+	--color-yellow-500: #ffc107;
+	--color-green-500: #28a745;
+	--color-teal-500: #20c997;
+	--color-cyan-500: #17a2b8;
+	--color-white-500: #fff;
+	--color-gray-500: #6c757d;
+	--color-gray-dark-500: #343a40;
+	--color-primary-500: #007bff;
+	--color-secondary-500: #6c757d;
+	--color-success-500: #28a745;
+	--color-info-500: #17a2b8;
+	--color-warning-500: #ffc107;
+	--color-danger-500: #dc3545;
+	--color-light-500: #f8f9fa;
+	--color-dark-500: #343a40;
+}
+
+/* adam-rms.com styles */
+body {
+	font-family: "Source Sans 3" !important;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+}
