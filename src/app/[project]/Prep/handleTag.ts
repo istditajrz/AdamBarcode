@@ -5,7 +5,7 @@ import {
 	swap_asset_in_project,
 	set_assignment_status,
 } from "@/common/api.mts";
-import { type HandleTagProps, type Success } from "../TagInput";
+import { type HandleTagProps, type Success } from "../TagInput/TagInput";
 import { checkLengthEq } from "../assets";
 import { server_unwrap } from "@/common/helpers.mts";
 import { instanceConsts } from "@/common/consts.mts";

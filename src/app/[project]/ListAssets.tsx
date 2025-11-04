@@ -1,4 +1,4 @@
-// @ts-expect-error css import
+// @ts-ignore css import
 import "@mantine/core/styles/Table.css";
 
 import { Table } from "@mantine/core";
@@ -12,7 +12,7 @@ export function ListAssets({
 	className?: string;
 }) {
 	const row = (asset_type: AssetType, index: number) => (
-		<Table.Tr key={index}>
+		<Table.Tr key={index} className="text-xl">
 			<Table.Td>{asset_type.assets.length}</Table.Td>
 			<Table.Td>{asset_type.name}</Table.Td>
 			<Table.Td>{asset_type.length || ""}</Table.Td>

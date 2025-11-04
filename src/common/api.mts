@@ -70,6 +70,10 @@ async function endpoint<T>(
 	auth?: boolean,
 	_recursed?: boolean,
 ): Promise<Response<T>> {
+	if (process.browser || typeof window !== "undefined") {
+		throw new Error('THIS CANNOT BE A BROWSER');
+	}
+
 	const h = new Headers();
 
 	// Make sure cookie set

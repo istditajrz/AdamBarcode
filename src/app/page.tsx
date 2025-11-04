@@ -1,5 +1,5 @@
 "use server";
-// @ts-expect-error css import
+// @ts-ignore css import
 import "@mantine/core/styles/Table.css";
 
 import Link from "next/link";
@@ -31,7 +31,7 @@ async function ProjRow({ project }: { project: Project }) {
 	"use client";
 	const link_href = `/${project.projects_id}/?name=${encodeURIComponent(project.projects_name)}`;
 	return (
-		<TableTr id={project.projects_id.toString()} className="pl-2 pb-4 mb-4">
+		<TableTr id={project.projects_id.toString()} className="pl-2 pb-4 mb-4 text-xl">
 			<TableTd className={"id"}>
 				<Link href={link_href}>{project.projects_id}</Link>
 			</TableTd>
@@ -68,10 +68,10 @@ export default async function Page() {
 	const relevant_projects = await get_relevant_projects();
 	return (
 		<Card className="shadow-lg bg-white-500 m-auto md:w-3/4 w-full h-fit">
-			<CardSection className="w-full! pt-3 pb-3 m-auto bg-green-500">
+			<CardSection className="w-full! pt-[2.5%] pb-[2.5%] m-auto bg-green-500">
 				<Title
 					id="title"
-					className="text-white-500 text-center w-full!"
+					className="text-white-500 text-center w-full! font-semibold text-3xl"
 				>
 					Projects
 				</Title>

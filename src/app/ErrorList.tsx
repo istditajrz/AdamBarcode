@@ -1,7 +1,7 @@
 "use client";
-// @ts-expect-error css imports
+// @ts-ignore css imports
 import "@mantine/core/styles/Alert.css";
-// @ts-expect-error css imports
+// @ts-ignore css imports
 import "@mantine/core/styles/Stack.css";
 import { Alert, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";

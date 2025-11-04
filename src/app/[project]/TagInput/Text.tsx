@@ -1,6 +1,6 @@
 'use client'
 
-// @ts-expect-error css import
+// @ts-ignore css import
 import "@mantine/core/styles/Input.css";
 
 import {
@@ -13,29 +13,13 @@ import {
 	useEffect,
 	useRef,
 	useState,
-	type Dispatch,
-	type SetStateAction,
 } from "react";
-import { type AssetType } from "./assets";
 
-export type Success = {
-	res: boolean;
-	assetTypes: AssetType[] | null;
-	error?: string;
-};
+import { type ComponentProps } from "./TagInput";
+import dynamic from "next/dynamic";
 
-export type HandleTagProps = {
-	project_id: string | number;
-	assetTypes: AssetType[];
-};
 
-type ComponentProps = HandleTagProps & {
-	setAssetTypes: Dispatch<SetStateAction<AssetType[]>>;
-	handleTag: (props: HandleTagProps, tag: string) => Promise<Success>;
-	className?: string;
-};
-
-export function TagInput(props: ComponentProps) {
+function TextTagInputComponent(props: ComponentProps) {
 	const [success, setSuccess] = useState<{ res: boolean, error?: string }>({ res: true });
 	const tag = useRef<HTMLInputElement>(null);
 
@@ -75,3 +59,5 @@ export function TagInput(props: ComponentProps) {
 		/>
 	);
 }
+
+export const TextTagInput = dynamic(() => Promise.resolve(TextTagInputComponent), { ssr: false })

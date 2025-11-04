@@ -1,5 +1,5 @@
 "use server";
-// @ts-expect-error css import
+// @ts-ignore css import
 import "@mantine/core/styles/Tabs.css";
 
 import {
@@ -19,8 +19,10 @@ import {
 } from "@mantine/core";
 import { Prep } from "./Prep/Prep";
 import { Deprep } from "./Deprep/Deprep";
-import { ProjectAssetsProvider } from "./ProjectAssetsProvider";
 import { server_unwrap } from "@/common/helpers.mts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default async function Page({
 	params,
@@ -41,14 +43,15 @@ export default async function Page({
 	}
 	const name: string = _name;
 
-	const project_assets = server_unwrap(await get_project_assets(project_id));
+	const proj_assets = server_unwrap(await get_project_assets(project_id))[instanceConsts.instance]!;
 
 	return (
 		<Card className="shadow-lg bg-white-500 m-auto md:w-3/4 w-full h-fit">
-			<CardSection className="w-full! pt-3 pb-3 m-auto bg-green-500">
+			<CardSection className="w-full! m-auto pt-[2.5%] pb-[2.5%] bg-green-500 h-[10%]! relative">
+				<Link href='/'><FontAwesomeIcon icon={faArrowLeft} className="text-white-500 pl-[2.5%] absolute m-auto text-3xl h-9!" /></Link>
 				<Title
 					id="title"
-					className="text-white-500 text-center w-full!"
+					className="text-white-500 w-full! text-center text-3xl font-semibold"
 				>
 					{name}
 				</Title>
@@ -63,21 +66,17 @@ export default async function Page({
 						}
 					</TabsList>
 					<InstanceConstsProvider value={instanceConsts}>
-						<ProjectAssetsProvider
-							value={project_assets[instanceConsts.instance]!}
-						>
-							<TabsPanel value="prep">
-								<Prep project_id={project_id} />
-							</TabsPanel>
-							<TabsPanel value="deprep">
-								<Deprep project_id={project_id} />
-							</TabsPanel>
-							{
-								// <Tabs.Panel value="advanced">
-								//     <Advanced />
-								// </Tabs.Panel>
-							}
-						</ProjectAssetsProvider>
+						<TabsPanel value="prep">
+							<Prep project_id={project_id} proj_assets={proj_assets} />
+						</TabsPanel>
+						<TabsPanel value="deprep">
+							<Deprep project_id={project_id} proj_assets={proj_assets} />
+						</TabsPanel>
+						{
+							// <Tabs.Panel value="advanced">
+							//     <Advanced />
+							// </Tabs.Panel>
+						}
 					</InstanceConstsProvider>
 				</Tabs>
 			</CardSection>

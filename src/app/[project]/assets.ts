@@ -1,3 +1,4 @@
+'use client'
 import type { Asset } from "@/common/api.mjs";
 
 export type AssetType = {

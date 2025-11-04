@@ -3,16 +3,21 @@
 import { use, useContext, useEffect, useState } from "react";
 import { type AssetType, dedupTypes } from "../assets";
 import { ListAssets } from "../ListAssets";
-import { TagInput } from "../TagInput";
+import { TagInput } from "../TagInput/TagInput";
 
 import { handleTag } from "./handleTag";
 import { InstanceConstsContext } from "@/app/InstanceConstsProvider";
-import { ProjectAssetsContext } from "../ProjectAssetsProvider";
+import { type InstanceAssets } from "@/common/api.mts";
 
-export function Deprep({ project_id }: { project_id: string | number }) {
+export function Deprep({
+	project_id,
+	proj_assets
+}: {
+	project_id: string | number;
+	proj_assets: InstanceAssets;
+}) {
 	const [assetTypes, setAssetTypes] = useState<AssetType[]>([]);
 	const instance_consts = useContext(InstanceConstsContext);
-	const proj_assets = useContext(ProjectAssetsContext);
 
 	useEffect(() => {
 		const to_prep_assets = Object.values(proj_assets).find(

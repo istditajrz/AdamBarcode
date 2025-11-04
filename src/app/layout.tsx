@@ -1,6 +1,6 @@
-// @ts-expect-error css import
+// @ts-ignore css import
 import "@mantine/core/styles.layer.css";
-// @ts-expect-error css import
+// @ts-ignore css import
 import "./global.css";
 
 import { Source_Sans_3 } from "next/font/google"
@@ -8,6 +8,7 @@ import { MantineProvider, mantineHtmlProps } from "@mantine/core";
 import { ErrorList } from "@/app/ErrorList";
 import type { Metadata } from "next";
 import { authenticate } from "@/common/api.mts";
+import { SettingsMenu } from "./settings/SettingMenu";
 
 export const metadata: Metadata = {
 	title: "RMScanner",
@@ -31,11 +32,12 @@ export default async function RootLayout({
 					content="width=device-width, inital-scale=1.0"
 				/>
 			</head>
-			<body className="h-screen w-screen p-8">
+			<body className="h-screen w-screen p-8 relative">
 				<MantineProvider
 					withCssVariables={false}
 					withGlobalClasses={false}
 				>
+					<SettingsMenu className="inline" />
 					<ErrorList />
 					{children}
 				</MantineProvider>
@@ -44,7 +46,7 @@ export default async function RootLayout({
 					<p className="m-auto text-center">
 						Find this on{" "}
 						<a
-							href="https://github.com/istditajrz/"
+							href="https://github.com/istditajrz/AdamBarcode"
 							target="_blank"
 							className="underline text-blue-500"
 						>
