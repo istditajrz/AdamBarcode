@@ -1,8 +1,5 @@
 "use server";
-import {
-	search_tag,
-	set_assignment_status,
-} from "@/common/api.mts";
+import { search_tag, set_assignment_status } from "@/common/api.mts";
 import { type HandleTagProps, type Success } from "../TagInput/TagInput";
 import { checkLengthEq } from "../assets";
 import { server_unwrap } from "@/common/helpers.mts";
@@ -48,14 +45,13 @@ export async function handleTag(
 
 	const new_assetTypes = assetTypes;
 	if (new_assetTypes[assetTypeIndex]?.assets.length == 1) {
-		delete new_assetTypes[assetTypeIndex]
+		delete new_assetTypes[assetTypeIndex];
 	} else {
 		new_assetTypes[assetTypeIndex]!.assets = [
 			...assetType.assets.slice(0, assetIndex),
 			...assetType.assets.slice(assetIndex + 1),
 		];
 	}
-
 
 	return { res: true, assetTypes: new_assetTypes };
 }

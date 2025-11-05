@@ -3,7 +3,7 @@ import "@mantine/core/styles.layer.css";
 // @ts-ignore css import
 import "./global.css";
 
-import { Source_Sans_3 } from "next/font/google"
+import { Source_Sans_3 } from "next/font/google";
 import { MantineProvider, mantineHtmlProps } from "@mantine/core";
 import { ErrorList } from "@/app/ErrorList";
 import type { Metadata } from "next";

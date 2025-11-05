@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 // @ts-ignore css import
 import "@mantine/core/styles/Input.css";
@@ -9,39 +9,41 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextInput } from "@mantine/core";
-import {
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { type ComponentProps } from "./TagInput";
 import dynamic from "next/dynamic";
 
-
 function TextTagInputComponent(props: ComponentProps) {
-	const [success, setSuccess] = useState<{ res: boolean, error?: string }>({ res: true });
+	const [success, setSuccess] = useState<{ res: boolean; error?: string }>({
+		res: true,
+	});
 	const tag = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		setTimeout(() =>
-			tag.current!.onkeydown = async (e) => {
-				if (e.key === "Enter") {
-					const res = await props.handleTag(props, tag.current!.value);
-					if (!res.res) {
-						// Fire "failure"
-						setSuccess(res);
-						// Reset
-						setTimeout(() => {
-							setSuccess({ res: true });
-							tag.current!.value = "";
-						}, 500);
+		setTimeout(
+			() =>
+				(tag.current!.onkeydown = async (e) => {
+					if (e.key === "Enter") {
+						const res = await props.handleTag(
+							props,
+							tag.current!.value,
+						);
+						if (!res.res) {
+							// Fire "failure"
+							setSuccess(res);
+							// Reset
+							setTimeout(() => {
+								setSuccess({ res: true });
+								tag.current!.value = "";
+							}, 500);
+						}
+						if (res.assetTypes !== null) {
+							props.setAssetTypes(res.assetTypes);
+						}
 					}
-					if (res.assetTypes !== null) {
-						props.setAssetTypes(res.assetTypes);
-					}
-				}
-			});
+				}),
+		);
 	}, [tag, props]);
 	return (
 		<TextInput
@@ -60,4 +62,7 @@ function TextTagInputComponent(props: ComponentProps) {
 	);
 }
 
-export const TextTagInput = dynamic(() => Promise.resolve(TextTagInputComponent), { ssr: false })
+export const TextTagInput = dynamic(
+	() => Promise.resolve(TextTagInputComponent),
+	{ ssr: false },
+);

@@ -11,7 +11,7 @@ import { type InstanceAssets } from "@/common/api.mts";
 
 export function Prep({
 	project_id,
-	proj_assets
+	proj_assets,
 }: {
 	project_id: string | number;
 	proj_assets: InstanceAssets;
