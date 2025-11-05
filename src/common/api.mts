@@ -70,6 +70,10 @@ async function endpoint<T>(
 	auth?: boolean,
 	_recursed?: boolean,
 ): Promise<Response<T>> {
+	if (process.browser || typeof window !== "undefined") {
+		throw new Error("THIS CANNOT BE A BROWSER");
+	}
+
 	const h = new Headers();
 
 	// Make sure cookie set
@@ -122,7 +126,10 @@ export async function authenticate(): Promise<void> {
 	);
 }
 
-async function get_endpoint<T>(path: string, body?: Record<string, string>): Promise<Response<T>> {
+async function get_endpoint<T>(
+	path: string,
+	body?: Record<string, string>,
+): Promise<Response<T>> {
 	return await endpoint("GET", path, body);
 }
 
@@ -219,7 +226,11 @@ export async function get_project_data(
 	}
 	return await post_endpoint<{ project: ProjectData }>(
 		"/projects/data.php?id=" + project_id.toString(),
-	).then((v) => (!v.result ? (v as unknown as Response<ProjectData>) : Ok(v.response!.project)));
+	).then((v) =>
+		!v.result
+			? (v as unknown as Response<ProjectData>)
+			: Ok(v.response!.project),
+	);
 }
 
 export async function get_swappable(assetsAssignments_id: number): Promise<

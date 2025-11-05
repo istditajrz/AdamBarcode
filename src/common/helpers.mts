@@ -13,12 +13,12 @@ export function server_unwrap<T>(r: Response<T>): T {
 	if (!r.result) {
 		redirect(
 			"/error?" +
-			[
-				!!r.error?.code ? `code=${enc(r.error.code!)}` : "",
-				!!r.error?.message
-					? `message=${enc(r.error.message!)}`
-					: "",
-			].join("&"),
+				[
+					!!r.error?.code ? `code=${enc(r.error.code!)}` : "",
+					!!r.error?.message
+						? `message=${enc(r.error.message!)}`
+						: "",
+				].join("&"),
 		);
 	}
 	return r.response!;
