@@ -42,7 +42,7 @@ function BarcodeComponent(props: ComponentProps) {
 			props.setAssetTypes(res.assetTypes);
 		}
 	}
-	const formats = new BarcodeDetector()?.formats;
+	const formats = (new BarcodeDetector() as unknown as { formats: string[] }).formats;
 
 	return (
 		<BarcodeScanner
