@@ -6,7 +6,7 @@ import {
 	set_assignment_status,
 } from "@/common/api.mts";
 import { type HandleTagProps, type Success } from "../TagInput/TagInput";
-import { checkLengthEq } from "../assets";
+import { checkLengthEq, type AssetType } from "../assets";
 import { server_unwrap } from "@/common/helpers.mts";
 import { instanceConsts } from "@/common/consts.mts";
 
@@ -31,12 +31,60 @@ export async function handleTag(
 	if (assetType.assets.length < 1) {
 		const new_assetTypes = [
 			...assetTypes.slice(0, assetTypeIndex),
-			...assetTypes.slice(assetTypeIndex + 1),
+			...assetTypes.slice(assetTypeIndex + 1, assetTypes.length),
 		];
 		return {
 			res: false,
 			assetTypes: new_assetTypes,
 			error: "Asset Type not present",
+		};
+	}
+	const asset_index = assetType.assets.findIndex(
+		(v) => v.assets_id === asset.assets_id,
+	);
+	console.log(asset.assets_id, assetType.assets);
+	if (asset_index !== -1) {
+		server_unwrap(
+			await set_assignment_status(
+				project_id,
+				instanceConsts.assignmentStatuses.prepped,
+				asset.assets_tag,
+			),
+		);
+		if (assetType.assets.length == 1) {
+			const new_assetTypes: AssetType[] = [
+				...assetTypes.slice(0, assetTypeIndex),
+				...assetTypes.slice(assetTypeIndex + 1, assetTypes.length),
+			];
+
+			return {
+				res: true,
+				assetTypes: new_assetTypes,
+			};
+		}
+
+		const new_assets = [
+			...assetType.assets.slice(0, asset_index),
+			...assetType.assets.slice(asset_index + 1, assetType.assets.length),
+		];
+
+		const new_assetType: AssetType = {
+			name: assetType.name,
+			id: assetType.id,
+			assets: new_assets,
+		};
+		if (!!assetType.length) {
+			new_assetType.length = assetType.length;
+		}
+
+		const new_assetTypes: AssetType[] = [
+			...assetTypes.slice(0, assetTypeIndex),
+			...assetTypes.slice(assetTypeIndex + 1, assetTypes.length),
+			new_assetType,
+		];
+		return {
+			res: true,
+			assetTypes: new_assetTypes,
 		};
 	}
 
@@ -54,9 +102,14 @@ export async function handleTag(
 			error: "Asset values do not match",
 		};
 	}
-	await Promise.all([
+
+	const new_assetTypes = assetTypes;
+	// Remove [-1] from list
+	new_assetTypes[assetTypeIndex]!.assets = assetType.assets.slice(0, -1);
+
+	const operation = await Promise.all([
 		swap_asset_in_project(
-			assetType.assets[-1]!.assetsAssignments_id!,
+			assetType.assets.at(-1)!.assetsAssignments_id!,
 			asset.assetTypes_id,
 		),
 		set_assignment_status(
@@ -66,9 +119,17 @@ export async function handleTag(
 		),
 	]);
 
-	const new_assetTypes = assetTypes;
-	// Remove [-1] from list
-	new_assetTypes[assetTypeIndex]!.assets = assetType.assets.slice(0, -1);
+	const res: boolean = operation
+		.map((v) => v.result)
+		.reduce((acc, v) => acc && v);
+
+	if (!res) {
+		return {
+			res: false,
+			assetTypes: null,
+			error: "Asset not swappable",
+		};
+	}
 
 	return { res: true, assetTypes: new_assetTypes };
 }

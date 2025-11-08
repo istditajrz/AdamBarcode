@@ -1,4 +1,3 @@
-"use client";
 import type { Asset } from "@/common/api.mjs";
 
 export type AssetType = {
@@ -9,7 +8,7 @@ export type AssetType = {
 };
 
 export function checkLengthEq(a: AssetType, b: Asset): boolean {
-	return (a.length || "") == b.asset_definableFields_1;
+	return (a.length || "") == (b.asset_definableFields_1 || "");
 }
 
 export function dedupTypes(requested: Asset[]): AssetType[] {

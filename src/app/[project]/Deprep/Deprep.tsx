@@ -19,6 +19,8 @@ export function Deprep({
 	const [assetTypes, setAssetTypes] = useState<AssetType[]>([]);
 	const instance_consts = useContext(InstanceConstsContext);
 
+	console.log(proj_assets);
+
 	useEffect(() => {
 		const to_prep_assets = Object.values(proj_assets).find(
 			(v) =>

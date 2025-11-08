@@ -44,6 +44,9 @@ function SettingsMenuComponent({ className }: { className?: string }) {
 					camera_barcode: false,
 				},
 	);
+
+	localStorage.setItem("settings", JSON.stringify(settings));
+
 	const [opened, { open }] = useDisclosure(false);
 	const close = () => {
 		const s = JSON.stringify(settings);
@@ -60,7 +63,6 @@ function SettingsMenuComponent({ className }: { className?: string }) {
 				[k, v],
 			]) as Settings,
 		);
-
 	return (
 		<>
 			<Modal opened={opened} onClose={close} title="Settings" centered>

@@ -29,6 +29,7 @@ function TextTagInputComponent(props: ComponentProps) {
 							props,
 							tag.current!.value,
 						);
+						console.log(res);
 						if (!res.res) {
 							// Fire "failure"
 							setSuccess(res);
@@ -36,7 +37,9 @@ function TextTagInputComponent(props: ComponentProps) {
 							setTimeout(() => {
 								setSuccess({ res: true });
 								tag.current!.value = "";
-							}, 500);
+							}, 5 * 1000);
+						} else {
+							tag.current!.value = "";
 						}
 						if (res.assetTypes !== null) {
 							props.setAssetTypes(res.assetTypes);
@@ -48,9 +51,9 @@ function TextTagInputComponent(props: ComponentProps) {
 	return (
 		<TextInput
 			ref={tag}
-			// label="Tag:"
 			aria-label="Tag Input"
 			placeholder="A-1234"
+			autoFocus
 			leftSection={
 				<FontAwesomeIcon
 					icon={success ? faHashtag : faCircleExclamation}

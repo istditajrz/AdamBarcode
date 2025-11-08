@@ -5,7 +5,7 @@ import "./global.css";
 
 import { Source_Sans_3 } from "next/font/google";
 import { MantineProvider, mantineHtmlProps } from "@mantine/core";
-import { ErrorList } from "@/app/ErrorList";
+import { ErrorManager } from "@/app/ErrorManager";
 import type { Metadata } from "next";
 import { authenticate } from "@/common/api.mts";
 import { SettingsMenu } from "./settings/SettingMenu";
@@ -38,8 +38,7 @@ export default async function RootLayout({
 					withGlobalClasses={false}
 				>
 					<SettingsMenu className="inline" />
-					<ErrorList />
-					{children}
+					<ErrorManager>{children}</ErrorManager>
 				</MantineProvider>
 				<br />
 				<footer>

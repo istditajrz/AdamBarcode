@@ -3,7 +3,9 @@ import { type Response } from "./api.mts";
 
 export function client_unwrap<T>(r: Response<T>): T {
 	if (!r.result) {
-		throw Error(r.error!.message);
+		const error = new ErrorEvent(r.error?.code || "Unknown", {
+			message: r.error?.message || "Unknown",
+		});
 	}
 	return r.response!;
 }

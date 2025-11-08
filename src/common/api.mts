@@ -197,7 +197,7 @@ export async function swap_asset_in_project(
 	assetsAssignments_id: number,
 	assets_id: number,
 ) {
-	await post_endpoint<void>("/projects/assets/swap.php", {
+	return await post_endpoint("/projects/assets/swap.php", {
 		assetsAssignments_id: assetsAssignments_id.toString(),
 		assets_id: assets_id.toString(),
 	});
