@@ -30,6 +30,7 @@ export type Asset = {
 			FLAG: number;
 		};
 	};
+	assetTypes_definableFields: string;
 	assetTypes_definableFields_ARRAY: string[];
 	asset_definableFields_1: string;
 };

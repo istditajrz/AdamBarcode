@@ -32,7 +32,7 @@ export function ListAssets({
 					<Table.Th>Length</Table.Th>
 				</Table.Tr>
 			</Table.Thead>
-			<Table.Tbody>{asset_list.map(row)}</Table.Tbody>
+			<Table.Tbody>{asset_list.sort((a, b) => a.name.localeCompare(b.name)).map(row)}</Table.Tbody>
 		</Table>
 	);
 }

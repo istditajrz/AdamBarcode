@@ -36,7 +36,10 @@ export function Prep({
 				project_id={project_id}
 				assetTypes={assetTypes}
 				setAssetTypes={setAssetTypes}
-				handleTag={handleTag}
+				handleTag={(p, v) => {
+					localStorage.setItem('page', 'prep');
+					return handleTag(p, v);
+				}}
 				className="w-[90%] m-auto pt-3 pb-3"
 			/>
 			<ListAssets asset_list={assetTypes} className="w-[90%]! m-auto" />

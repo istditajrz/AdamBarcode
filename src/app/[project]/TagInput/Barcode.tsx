@@ -48,7 +48,6 @@ function BarcodeComponent(props: ComponentProps) {
 		<BarcodeScanner
 			options={{ formats: formats }}
 			onCapture={async ([b, ..._]) => {
-				console.log(b);
 				onFinish(await props.handleTag(props, b?.rawValue || ""));
 			}}
 			className={props.className || ""}

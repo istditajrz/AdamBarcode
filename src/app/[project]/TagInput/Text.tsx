@@ -23,29 +23,28 @@ function TextTagInputComponent(props: ComponentProps) {
 	useEffect(() => {
 		setTimeout(
 			() =>
-				(tag.current!.onkeydown = async (e) => {
-					if (e.key === "Enter") {
-						const res = await props.handleTag(
-							props,
-							tag.current!.value,
-						);
-						console.log(res);
-						if (!res.res) {
-							// Fire "failure"
-							setSuccess(res);
-							// Reset
-							setTimeout(() => {
-								setSuccess({ res: true });
-								tag.current!.value = "";
-							}, 5 * 1000);
-						} else {
+			(tag.current!.onkeydown = async (e) => {
+				if (e.key === "Enter") {
+					const res = await props.handleTag(
+						props,
+						tag.current!.value.toUpperCase(),
+					);
+					if (!res.res) {
+						// Fire "failure"
+						setSuccess(res);
+						// Reset
+						setTimeout(() => {
+							setSuccess({ res: true });
 							tag.current!.value = "";
-						}
-						if (res.assetTypes !== null) {
-							props.setAssetTypes(res.assetTypes);
-						}
+						}, 5 * 1000);
+					} else {
+						tag.current!.value = "";
 					}
-				}),
+					if (res.assetTypes != null) {
+						props.setAssetTypes(res.assetTypes);
+					}
+				}
+			}),
 		);
 	}, [tag, props]);
 	return (
