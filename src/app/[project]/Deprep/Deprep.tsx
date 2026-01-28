@@ -19,8 +19,6 @@ export function Deprep({
 	const [assetTypes, setAssetTypes] = useState<AssetType[]>([]);
 	const instance_consts = useContext(InstanceConstsContext);
 
-	console.log(proj_assets);
-
 	useEffect(() => {
 		const to_prep_assets = Object.values(proj_assets).find(
 			(v) =>
@@ -37,7 +35,10 @@ export function Deprep({
 				project_id={project_id}
 				assetTypes={assetTypes}
 				setAssetTypes={setAssetTypes}
-				handleTag={handleTag}
+				handleTag={(p, v) => {
+					localStorage.setItem('page', 'deprep');
+					return handleTag(p, v);
+				}}
 				className="w-[90%] m-auto pt-3 pb-3"
 			/>
 			<ListAssets asset_list={assetTypes} className="w-[90%]! m-auto" />

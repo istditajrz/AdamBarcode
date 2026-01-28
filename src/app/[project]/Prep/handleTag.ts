@@ -10,7 +10,7 @@ import { checkLengthEq, type AssetType } from "../assets";
 import { server_unwrap } from "@/common/helpers.mts";
 import { instanceConsts } from "@/common/consts.mts";
 
-export async function handleTag(
+async function innerHandleTag(
 	{ project_id, assetTypes }: HandleTagProps,
 	value: string,
 ): Promise<Success> {
@@ -42,7 +42,6 @@ export async function handleTag(
 	const asset_index = assetType.assets.findIndex(
 		(v) => v.assets_id === asset.assets_id,
 	);
-	console.log(asset.assets_id, assetType.assets);
 	if (asset_index !== -1) {
 		server_unwrap(
 			await set_assignment_status(
@@ -132,4 +131,19 @@ export async function handleTag(
 	}
 
 	return { res: true, assetTypes: new_assetTypes };
+}
+
+export async function handleTag(props: HandleTagProps, value: string) {
+	const test = /-[0-9]{4}$/;
+	const t = await innerHandleTag(props, value);
+	if (t.res) {
+		return t;
+	}
+	if (!test.test(value)) {
+		const pattern = /([0-9]+$)/;
+		const number = pattern.exec(value)![0];
+		const prefix = value.slice(0, value.length - number.length);
+		return handleTag(props, `${prefix}-${number.padStart(4, '0')}`);
+	}
+	return t;
 }
